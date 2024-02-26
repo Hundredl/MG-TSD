@@ -52,6 +52,6 @@ do
     --share_ratio_list $share_ratio_list\
     --weight_list $weight_list\
     --run_num $i\
-    --log_matrics False \
+    --log_metrics False \
     >>"${log_path}/gran_${num_gran}_share_${share_ratio_list}_weight_${weight_list}_run_${i}.txt" 2>&1
 done
