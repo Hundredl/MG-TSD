@@ -37,15 +37,15 @@ bash scripts/run_mgtsd.sh
 ```
 
 The detailed descriptions about the arguments are as following:
-| Parameter name   | Description of parameter                                                                                                               |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| num_gran         | the number of granularities, must be equal to the length of mg_dict                                                                    |
-| mg_dict          | the multi-granularity list, 1_4 means 1h and 4h, 1_4_8 means 1h, 4h and 8h'                                                            |
-| share_ratio_list | the share ratio list, 1_0.9, means that for the second granularity, 90% of the diffusion steps are shared with the finest granularity. |
-| weight_list      | the weight list, 0.9_0.1 means that the weight for the first granularity is 0.9 and the weight for the second granularity is 0.1.      |
-| log_matrics      | whether to log the matrics to the wandb when training. it will slow down the training process                                          |
-| wandb_space      | the space name of the wandb                                                                                                            |
-| wandb_key        | the key of the wandb, please replace it with your own key                                                                              |
+| Parameter Name     | Description                                                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `num_gran`         | The number of granularity levels, which should correspond to the length of `mg_dict`.                              |
+| `mg_dict`          | A list defining multiple granularity intervals, e.g., '1_4' for 1 hour and 4 hours, '1_4_8' for 1, 4, and 8 hours. |
+| `share_ratio_list` | A list detailing the share ratios; '1_0.9' indicates a 90% share of diffusion steps with the finest granularity.   |
+| `weight_list`      | A list of weights for each granularity level; '0.9_0.1' assigns 0.9 to the first level and 0.1 to the second.      |
+| `log_metrics`      | Toggle for logging metrics to Weights & Biases (wandb) during training, which may affect training speed.           |
+| `wandb_space`      | The designated space name for wandb logging.                                                                       |
+| `wandb_key`        | Your personal wandb access key (please replace with your actual key).                                              |  |
 
 ## A Simple Example
 see `src/example.ipynb` for more information.

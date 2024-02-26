@@ -63,8 +63,8 @@ def parse_args():
                         default="test", help='the space name of the wandb')
     parser.add_argument('--wandb_key', type=str, default="your wandb key",
                         help='the key of the wandb, please replace it with your own key')
-    parser.add_argument('--log_matrics', type=str2bool, default="False",
-                        help='whether to log the matrics to the wandb when training. it will slow down the training process')
+    parser.add_argument('--log_metrics', type=str2bool, default="False",
+                        help='whether to log the metrics to the wandb when training. it will slow down the training process')
 
     # 返回一个命名空间，包含传递给命令的参数
     return parser.parse_args()
@@ -117,7 +117,7 @@ weights = weight_list
 print(f"share_ratio_list:{share_ratio_list}")
 learning_rate = args.learning_rate
 num_cells = args.num_cells
-if args.log_matrics:
+if args.log_metrics:
     wandb.login(key=args.wandb_key)
     wandb.init(project=args.wandb_space, save_code=True, config=args)
 print(args)
@@ -184,7 +184,7 @@ estimator = mgtsdEstimator(
                     learning_rate=learning_rate,
                     num_batches_per_epoch=100,
                     batch_size=batch_size,
-                    log_matrics=args.log_matrics,)
+                    log_metrics=args.log_metrics,)
 )
 print("================================================")
 print("start training the network")
@@ -255,7 +255,7 @@ for cur_gran_index, cur_gran in enumerate(mg_dict):
     CRPS_Sum = agg_metric["m_sum_mean_wQuantileLoss"]
     ND_Sum = agg_metric["m_sum_ND"]
     NRMSE_Sum = agg_metric["m_sum_NRMSE"]
-    if args.log_matrics:
+    if args.log_metrics:
         wandb.log({f'CRPS_Sum_{cur_gran}': CRPS_Sum,
                    f'ND_Sum_{cur_gran}': ND_Sum, f'NRMSE_Sum_{cur_gran}': NRMSE_Sum})
 

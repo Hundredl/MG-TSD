@@ -38,8 +38,8 @@ class Trainer:
         self.clip_gradient = clip_gradient
         self.device = device
         self.total_step = 0
-        self.log_matrics = kwargs.get('log_matrics')
-        print(f'self.log_matrics: {self.log_matrics}')
+        self.log_metrics = kwargs.get('log_metrics')
+        print(f'self.log_metrics: {self.log_metrics}')
 
     def __call__(
         self,
@@ -64,7 +64,7 @@ class Trainer:
 
         for epoch_no in range(self.epochs):
             self.total_step += 1
-            if self.log_matrics == True:
+            if self.log_metrics == True:
                 wandb.log({"train/epoch": epoch_no}, step=self.total_step)
             # mark epoch start time
             tic = time.time()
@@ -94,7 +94,7 @@ class Trainer:
                         },
                         refresh=False,
                     )
-                    if self.log_matrics == True:
+                    if self.log_metrics == True:
                         wandb.log({'train/loss': avg_epoch_loss},
                                   step=self.total_step)
                     loss.backward()
@@ -135,14 +135,14 @@ class Trainer:
                             },
                             refresh=False,
                         )
-                        if self.log_matrics == True:
+                        if self.log_metrics == True:
                             wandb.log({'val/loss': avg_epoch_loss_val},
                                       step=self.total_step)
                         if self.num_batches_per_epoch == batch_no:
                             break
                 it.close()
-                if self.log_matrics == True:
-                    print('log_matrics')
+                if self.log_metrics == True:
+                    print('log_metrics')
                     res = estimator.get_metric(
                         transformation, net, device, validation_dataset, prefix="val/")
                     wandb.log(res, step=self.total_step)
