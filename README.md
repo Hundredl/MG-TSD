@@ -45,7 +45,51 @@ The detailed descriptions about the arguments are as following:
 | `weight_list`      | A list of weights for each granularity level; '0.9_0.1' assigns 0.9 to the first level and 0.1 to the second.      |
 | `log_metrics`      | Toggle for logging metrics to Weights & Biases (wandb) during training, which may affect training speed.           |
 | `wandb_space`      | The designated space name for wandb logging.                                                                       |
-| `wandb_key`        | Your personal wandb access key (please replace with your actual key).                                              |  |
+| `wandb_key`        | Your personal wandb access key (please replace with your actual key).                                              |
+
+
+Alternatively, you can also directly run the following command to train and test with different settings.
+
+Setting 1: Perform experiments with 3 granularities on the Solar dataset. 
+``` bash
+python src/run_mgtsd.py \  
+  --result_path "./" \  
+  --model_name "mgtsd" \  
+  --epoch 30 \  
+  --cuda_num 0 \  
+  --dataset "solar" \  
+  --diff_steps 100 \  
+  --batch_size 128 \  
+  --num_cells 128 \  
+  --mg_dict "1_4_12" \  
+  --num_gran 3 \  
+  --share_ratio_list "1_0.8_0.6" \  
+  --weight_list "0.8_0.1_0.1" \  
+  --run_num 1 \  
+  --log_metrics False  
+```
+Setting 2: Perform experiments with 4 granularities on the Solar dataset and log the metrics to Weights & Biases (wandb) during the process.
+
+
+``` bash
+python src/run_mgtsd.py \  
+  --result_path "./" \  
+  --model_name "mgtsd" \  
+  --epoch 30 \  
+  --cuda_num 0 \  
+  --dataset "solar" \  
+  --diff_steps 100 \  
+  --batch_size 128 \  
+  --num_cells 128 \  
+  --mg_dict "1_4_12_24" \  
+  --num_gran 4 \  
+  --share_ratio_list "1_0.8_0.6_0.6" \  
+  --weight_list "0.7_0.1_0.1_0.1" \  
+  --run_num 1 \  
+  --log_metrics True \  
+  --wandb_space mgtsd \  
+  --wandb_key your-personal-wandb-access-key
+```
 
 ## A Simple Example
 see `src/example.ipynb` for more information.
