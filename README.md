@@ -35,6 +35,18 @@ conda activate mgtsd
 pip install -r requirements.txt
 bash scripts/run_mgtsd.sh
 ```
+
+The detailed descriptions about the arguments are as following:
+| Parameter name   | Description of parameter                                                                                                               |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| num_gran         | the number of granularities, must be equal to the length of mg_dict                                                                    |
+| mg_dict          | the multi-granularity list, 1_4 means 1h and 4h, 1_4_8 means 1h, 4h and 8h'                                                            |
+| share_ratio_list | the share ratio list, 1_0.9, means that for the second granularity, 90% of the diffusion steps are shared with the finest granularity. |
+| weight_list      | the weight list, 0.9_0.1 means that the weight for the first granularity is 0.9 and the weight for the second granularity is 0.1.      |
+| log_matrics      | whether to log the matrics to the wandb when training. it will slow down the training process                                          |
+| wandb_space      | the space name of the wandb                                                                                                            |
+| wandb_key        | the key of the wandb, please replace it with your own key                                                                              |
+
 ## A Simple Example
 see `src/example.ipynb` for more information.
 
@@ -47,14 +59,28 @@ Run the `scripts/run_mgtsd.sh` and the data will be automatically downloaded to 
 
 Our comprehensive evaluation across six benchmarks and three performance metrics involved a comparison with nine baseline models. The results demonstrate that our model secures the state-of-the-art (SOTA) status, achieving a substantial improvement ranging from 4.7% to 35.8% on the $\text{CRPS}_{\text{sum}}$ metric across the six benchmarks.
 
+### The empirical study of insight
+In Figure 3(a)-(d), the dashed blue curve in each plot represent $\text{CRPS}_{\text{sum}}$ values between the coarse-grained targets and 1-hour samples come from 1-gran (finest-gran) model at each intermediate denoising step; each point on the orange polylines represents the $\text{CRPS}_{\text{sum}}$ value of 1-hour predictions by 2-gran MG-TSD models (where one coarse granularity is utilized to guide the learning process for the finest-grained data), with different share ratios ranging from [0.2, 0.4, 0.6, 0.8, 1.0], and the lowest point of the line segment can be used to characterize the most suitable share ratio for the corresponding granularity.
 
+The four subplots from (a) to (d) illustrate a gradual smoothing transformation of the distribution of increasingly coarser targets. A key observation is that from the left to the right panel, the distribution of coarser targets gradually aligns with the distribution of intermediate samples at larger diffusion steps. More specifically, as granularity transitions from fine to coarse (4h→6h→12h→24h), the denoising steps at which the distribution most resembles the coarse-grained targets increase (approximately at steps 80→60→40→40). This comparison underscores the similarity between the diffusion process and the smoothing process from the finest-grained data to coarse-grained data, both of which involve a gradual loss of finer characteristics from the finest-grained data through a smooth transformation.
 
-![alt text](pics/result1.png)
+<p align="center">  
+  <img src="pics/result1.png" alt="alt text" width="100%"/>
+<br/>
+Figure 3: Selection of share ratio for MG-TSD models
+</p>  
 
+### Case Study
+To illustrate the guidance effect of coarse-grained data, we visualize the ground truth and the predicted mean for both 1-hour and 4-hour granularity time series across four dimensions in the Solar
+dataset in Figure 4. In the MG-TSD model, the coarse-grained samples display a more robust capacity to capture the trends, subsequently guiding the generation of more precise fine-grained data.
+<p align="center">  
+  <img src="pics/result2.png" alt="alt text" width="100%"/>
+<br/>
+Figure 4: MG-TSD and TimeGrad prediction intervals and test set ground-truth for Solar data of
+some illustrative dimensions of 370 dimensions from first rolling-window.
 
-![alt text](pics/result2.png)
+</p>  
 
-![alt text](pics/result3.png)
 
 
 ## Citation
