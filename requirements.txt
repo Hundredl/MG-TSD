@@ -1,0 +1,8 @@
+gluonts==0.9.6
+matplotlib==3.5.1
+numpy==1.21.1
+pandas==1.4.2
+torch==1.13.1
+tqdm==4.64.1
+wandb
+pytorchts==0.6.0
